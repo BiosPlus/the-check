@@ -1,0 +1,20 @@
+name: Scan
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            alphabet: [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z]
+          
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Print letter
+        run: 'echo ${{ matrix.alphabet }}'
