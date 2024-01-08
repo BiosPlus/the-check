@@ -55,7 +55,13 @@ jobs:
         run: 'echo ${{ matrix.alphabet }}'
       - name: Get Winget-PKGs repo
         run: 'git clone https://github.com/microsoft/winget-pkgs'
-      - name: Run checker script
+      - name: Checker script permissions
         run: |
           chmod +x ./scripts/package_check.sh
+      - name: Run checker script
+        run: |
           ./scripts/package_check.sh ${{ matrix.alphabet }}
+      - name: List failed urls
+        run: |
+          cat fails.csv | sort | uniq > fails_sorted.csv
+          cat fails_sorted.csv

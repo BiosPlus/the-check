@@ -44,6 +44,3 @@ find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | whi
             fi
         done
     done
-
-cat fails.csv | sort | uniq > fails_sorted.csv
-
