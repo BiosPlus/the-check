@@ -37,10 +37,8 @@ find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | whi
     # echo "Package Version: $PACKAGEVERSION"
     # echo "URLs: ${URLS[@]}"
 
-        # Test each URL if it ends with .msi, .exe, or .zip
-        for url in "${URLS[@]}"; do
-            if [[ $url == *.msi || $url == *.exe || $url == *.zip ]]; then
-                test_url "$url"
-            fi
-        done
+    # Test each URL
+    for url in "${URLS[@]}"; do
+        test_url "$url"
     done
+done
