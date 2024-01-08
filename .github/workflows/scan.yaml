@@ -83,7 +83,7 @@ jobs:
         - name: Compose all artifacts
           run: |
               ls -lhR ~
-              cat failed_urls/* > all_failed_urls.csv
+              cat failed_urls_*/* > all_failed_urls.csv
               cat all_failed_urls.csv
         - name: Upload final artifact
           uses: actions/upload-artifact@v4
