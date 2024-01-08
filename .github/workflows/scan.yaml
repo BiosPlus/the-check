@@ -12,32 +12,32 @@ jobs:
     strategy:
       matrix:
         alphabet:
-        #   - a
-        #   - b
-        #   - c
-        #   - d
-        #   - e
-        #   - f
-        #   - g
-        #   - h
-        #   - i
-        #   - j
-        #   - k
-        #   - l
-        #   - m
-        #   - n
-        #   - o
-        #   - p
-        #   - q
-        #   - r
-        #   - s
-        #   - t
-        #   - u
-        #   - v
-        #   - w
-        #   - x
-        #   - y
-        #   - z
+          - a
+          - b
+          - c
+          - d
+          - e
+          - f
+          - g
+          - h
+          - i
+          - j
+          - k
+          - l
+          - m
+          - n
+          - o
+          - p
+          - q
+          - r
+          - s
+          - t
+          - u
+          - v
+          - w
+          - x
+          - y
+          - z
           - 0
           - 1
           - 2
@@ -66,10 +66,11 @@ jobs:
           cat fails.csv | sort | uniq > fails_sorted.csv
           cat fails_sorted.csv
       - name: Upload failed urls artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: failed_urls_${{ matrix.alphabet }}
           path: fails_sorted.csv
+          if-no-files-found: ignore
           retention-days: 1
   Compose-Artifacts:
     runs-on: ubuntu-latest
@@ -78,16 +79,13 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v4
         - name: Get all artifacts
-          uses: actions/download-artifact@v3
-          with:
-              name: failed_urls_*
-              path: failed_urls
+          uses: actions/download-artifact@v4
         - name: Compose all artifacts
           run: |
               cat failed_urls/* > all_failed_urls.csv
               cat all_failed_urls.csv
         - name: Upload final artifact
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
               name: all_failed_urls
               path: all_failed_urls.csv
