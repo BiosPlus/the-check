@@ -50,7 +50,7 @@ jobs:
         #   - 9
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Print letter
         run: 'echo ${{ matrix.alphabet }}'
       - name: Get Winget-PKGs repo
@@ -65,3 +65,30 @@ jobs:
         run: |
           cat fails.csv | sort | uniq > fails_sorted.csv
           cat fails_sorted.csv
+      - name: Upload failed urls artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: failed_urls_${{ matrix.alphabet }}
+          path: fails_sorted.csv
+          retention-days: 1
+  Compose-Artifacts:
+    runs-on: ubuntu-latest
+    needs: Package-Scanning
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Get all artifacts
+          uses: actions/download-artifact@v3
+          with:
+              name: failed_urls_*
+              path: failed_urls
+        - name: Compose all artifacts
+          run: |
+              cat failed_urls/* > all_failed_urls.csv
+              cat all_failed_urls.csv
+        - name: Upload final artifact
+          uses: actions/upload-artifact@v3
+          with:
+              name: all_failed_urls
+              path: all_failed_urls.csv
+              retention-days: 1
