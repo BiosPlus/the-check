@@ -1,6 +1,7 @@
 #!/bin/bash
 
 REPO_DIR="winget-pkgs"
+LETTER="$1"
 
 # Function to test if a file is available
 test_url() {
@@ -26,7 +27,7 @@ else
 fi
 
 # Rest of your script...
-find winget-pkgs -type f -name "*installer.yaml" | sort | while read -r file; do
+find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | while read -r file; do
     URLS=($(grep -E "InstallerUrl" "$file" | awk -F ': ' '{print $2}'))
     PACKAGEIDENTIFIER=$(grep -E "PackageIdentifier" "$file" | awk -F ': ' '{print $2}')
     PACKAGEVERSION=$(grep -E "PackageVersion" "$file" | awk -F ': ' '{print $2}')
@@ -42,3 +43,6 @@ find winget-pkgs -type f -name "*installer.yaml" | sort | while read -r file; do
             fi
         done
     done
+
+cat fails.csv | sort | uniq > fails_sorted.csv
+

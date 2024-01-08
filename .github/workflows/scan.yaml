@@ -19,3 +19,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Print letter
         run: 'echo ${{ matrix.alphabet }}'
+      - name: Get Winget-PKGs repo
+        run: 'git clone https://github.com/microsoft/winget-pkgs'
+      - name: 'Run checker script'
+        run: './scripts/package_check.sh ${{ matrix.alphabet }}'
