@@ -8,7 +8,7 @@ test_url() {
     local url=$1
     local response=$(curl -s -L --head -w "%{http_code}" "$url" -o /dev/null)
     if [ "$response" == "200" ]; then
-        echo "File is available: $url"
+        # echo "File is available: $url"
     else
         echo -e "\e[31mFile is not available: $url\e[0m"
         echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url" >> fails.csv
@@ -31,7 +31,7 @@ find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | whi
     URLS=($(grep -E "InstallerUrl" "$file" | awk -F ': ' '{print $2}'))
     PACKAGEIDENTIFIER=$(grep -E "PackageIdentifier" "$file" | awk -F ': ' '{print $2}')
     PACKAGEVERSION=$(grep -E "PackageVersion" "$file" | awk -F ': ' '{print $2}')
-    echo "File: $file"
+    # echo "File: $file"
     # echo "Package Identifier: $PACKAGEIDENTIFIER"
     # echo "Package Version: $PACKAGEVERSION"
     # echo "URLs: ${URLS[@]}"
