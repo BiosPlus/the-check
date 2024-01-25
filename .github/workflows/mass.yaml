@@ -81,6 +81,7 @@ jobs:
         - name: Install Komac
           run: |
             winget install komac --disable-interactivity --accept-source-agreements
+            . $profile
         - name: Add token to Komac
           run: |
             komac token update --token={{ secrets.PR_TOKEN }}
