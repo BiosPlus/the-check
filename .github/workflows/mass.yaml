@@ -79,7 +79,7 @@ jobs:
             winget install komac
       - name: Add token to Komac
         run: |
-            komac token update --token={{ secrets.PR_TOKEN}}
+            komac token update --token={{ secrets.PR_TOKEN }}
       - name: Generate Manifest and Submit
         run: |
             komac update -i "{{ matrix.package_id }}" -v "{{ matrix.package_versions }}" -u "https://downloads.topazlabs.com/deploy/TopazPhotoAI/{{ matrix.package_versions }}/TopazPhotoAI-{{ matrix.package_versions }}.msi" --submit
