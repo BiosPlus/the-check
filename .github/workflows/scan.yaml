@@ -1,11 +1,6 @@
 name: Scan
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 jobs:
   Package-Scanning:
     runs-on: ubuntu-latest
