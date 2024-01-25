@@ -74,23 +74,19 @@ jobs:
     steps:
         - name: Checkout code
           uses: actions/checkout@v4
+        - name: Install winget
+          run: |
+            $progressPreference = 'silentlyContinue'
+            Write-Information "Downloading WinGet and its dependencies..."
+            Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+            Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
+            Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile Microsoft.UI.Xaml.2.7.x64.appx
+            Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
+            Add-AppxPackage Microsoft.UI.Xaml.2.7.x64.appx
+            Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
         - name: Install Komac
           run: |
-            If ($IsWindows) { $cliExt = 'exe' }
-            Else { $cliOS = $IsMacOS ? '-macos' : '-linux'; $cliExt = 'tar.gz' }
-            Write-Output "OS: $($cliOS ? $cliOS.TrimStart('-') : 'windows'); Extension: $cliExt"
-            $komacUrl = "https://github.com/russellbanks/Komac/releases/download/v2.0.0/KomacPortable$($cliOS)-v2.0.0-x64.$cliExt"
-            Write-Output "Downloading Komac from $komacUrl"
-            Invoke-WebRequest -Uri $komacUrl -OutFile .\komac.$cliExt
-            Write-Output "Saved to komac.$cliExt"
-            If ($IsMacOS -or $IsLinux) {
-              Write-Output "Extracting komac from komac.$cliExt"
-              tar -xzf komac.$cliExt; rm komac.$cliExt; mv KomacPortable* komac
-            }
-          shell: pwsh
-        # - name: Install Komac
-        #   run: |
-        #     winget install komac --disable-interactivity --accept-source-agreements
+            winget install komac --disable-interactivity --accept-source-agreements
         - name: Add token to Komac
           run: |
             komac token update --token={{ secrets.PR_TOKEN }}
