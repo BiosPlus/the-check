@@ -80,7 +80,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.PR_TOKEN }}
         - name: Install Komac
           run: |
-            winget install komac
+            winget install komac --disable-interactivity --accept-source-agreements
         - name: Add token to Komac
           run: |
             komac token update --token={{ secrets.PR_TOKEN }}
