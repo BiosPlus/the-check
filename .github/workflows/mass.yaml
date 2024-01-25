@@ -72,17 +72,19 @@ jobs:
         package_id:
             - TopazLabs.TopazPhotoAI
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install Komac
-        run: |
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Install winget
+          uses: Cyberboss/install-winget@v1
+        - name: Install Komac
+          run: |
             winget install komac
-      - name: Add token to Komac
-        run: |
+        - name: Add token to Komac
+          run: |
             komac token update --token={{ secrets.PR_TOKEN }}
-      - name: Generate Manifest and Submit
-        run: |
+        - name: Generate Manifest and Submit
+          run: |
             komac update -i "{{ matrix.package_id }}" -v "{{ matrix.package_versions }}" -u "https://downloads.topazlabs.com/deploy/TopazPhotoAI/{{ matrix.package_versions }}/TopazPhotoAI-{{ matrix.package_versions }}.msi" --submit
-      - name: Remove token from Komac
-        run: |
+        - name: Remove token from Komac
+          run: |
             komac token remove --yes
