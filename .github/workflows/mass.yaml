@@ -1,6 +1,6 @@
 name: Submit Packages en Masse
 on:
-  push:
+  workflow_dispatch:
 jobs:
   Package-Submission:
     runs-on: ubuntu-latest
@@ -14,66 +14,66 @@ jobs:
         package_versions:
             # - 1.0.7
             # - 1.0.8
-            - 1.0.9
-            # - 1.1.0
-            # - 1.1.1
-            # - 1.1.3
-            # - 1.1.4
-            # - 1.1.5
-            # - 1.1.6
-            # - 1.1.7
-            # - 1.1.8
-            # - 1.1.9
-            # - 1.2.0
-            # - 1.2.1
-            # - 1.2.10
-            # - 1.2.2
-            # - 1.2.3
-            # - 1.2.4
-            # - 1.2.5
-            # - 1.2.6
-            # - 1.2.7
-            # - 1.2.8
-            # - 1.2.9
-            # - 1.3.0
-            # - 1.3.1
-            # - 1.3.10
-            # - 1.3.11
-            # - 1.3.12
-            # - 1.3.2
-            # - 1.3.3
-            # - 1.3.4
-            # - 1.3.5
-            # - 1.3.6
-            # - 1.3.7
-            # - 1.3.8
-            # - 1.3.9
-            # - 1.4.0
-            # - 1.4.1
-            # - 1.4.2
-            # - 1.4.3
-            # - 1.5.0
-            # - 1.5.1
-            # - 1.5.2
-            # - 1.5.3
-            # - 1.5.4
-            # - 2.0.0
-            # - 2.0.1
-            # - 2.0.2
-            # - 2.0.3
-            # - 2.0.4
-            # - 2.0.5
-            # - 2.0.6
-            # - 2.0.7
-            # - 2.1.0
-            # - 2.1.1
-            # - 2.1.2
-            # - 2.1.3
-            # - 2.1.4
-            # - 2.2.0
-            # - 2.2.1
-            # - 2.2.2
-            # - 2.3.0
+            # - 1.0.9
+            - 1.1.0
+            - 1.1.1
+            - 1.1.3
+            - 1.1.4
+            - 1.1.5
+            - 1.1.6
+            - 1.1.7
+            - 1.1.8
+            - 1.1.9
+            - 1.2.0
+            - 1.2.1
+            - 1.2.10
+            - 1.2.2
+            - 1.2.3
+            - 1.2.4
+            - 1.2.5
+            - 1.2.6
+            - 1.2.7
+            - 1.2.8
+            - 1.2.9
+            - 1.3.0
+            - 1.3.1
+            - 1.3.10
+            - 1.3.11
+            - 1.3.12
+            - 1.3.2
+            - 1.3.3
+            - 1.3.4
+            - 1.3.5
+            - 1.3.6
+            - 1.3.7
+            - 1.3.8
+            - 1.3.9
+            - 1.4.0
+            - 1.4.1
+            - 1.4.2
+            - 1.4.3
+            - 1.5.0
+            - 1.5.1
+            - 1.5.2
+            - 1.5.3
+            - 1.5.4
+            - 2.0.0
+            - 2.0.1
+            - 2.0.2
+            - 2.0.3
+            - 2.0.4
+            - 2.0.5
+            - 2.0.6
+            - 2.0.7
+            - 2.1.0
+            - 2.1.1
+            - 2.1.2
+            - 2.1.3
+            - 2.1.4
+            - 2.2.0
+            - 2.2.1
+            - 2.2.2
+            - 2.3.0
         package_id:
             - TopazLabs.TopazPhotoAI
     steps:
@@ -90,31 +90,6 @@ jobs:
             tar -xzf KomacPortable-linux-nightly-x64.tar.gz
             mv KomacPortable-linux-nightly-x64 komac
             rm KomacPortable-linux-nightly-x64.tar.gz
-        # - name: Update Token
-        #   run: |
-        #     ./komac token update --token=$KOMAC_TOKEN
         - name: Generate Manifest and Submit
           run: |
             ./komac update --token=$KOMAC_TOKEN -i "$PACKAGE_ID" -v $PACKAGE_VERSION -u "$PACKAGE_URL" --submit
-        # - name: Remove token from Komac
-        #   run: |
-        #     ./komac token remove --yes
-        # # - name: Run Komac
-        # #   uses: michidk/run-komac@v1
-        # #   with:
-        # #     args: 'update --token="$KOMAC_TOKEN" -i "$PACKAGE_ID" -v "$PACKAGE_VERSION" -u "$PACKAGE_URL" --submit'
-        # - name: Install Komac
-        #   run: |
-        #     winget install komac --disable-interactivity --accept-source-agreements
-        # - name: LS everything
-        #   run: |
-        #     ls -lRa
-        # - name: Add token to Komac
-        #   run: |
-        #     komac token update --token={{ secrets.PR_TOKEN }}
-        # - name: Generate Manifest and Submit
-        #   run: |
-        #     komac update --token={{ secrets.PR_TOKEN }} -i "{{ matrix.package_id }}" -v "{{ matrix.package_versions }}" -u "https://downloads.topazlabs.com/deploy/TopazPhotoAI/{{ matrix.package_versions }}/TopazPhotoAI-{{ matrix.package_versions }}.msi" --submit
-        # - name: Remove token from Komac
-        #   run: |
-        #     komac token remove --yes
