@@ -84,10 +84,10 @@ jobs:
             echo "Package ID: $PACKAGE_ID"
             echo "Package Version: $PACKAGE_VERSION"
             echo "Package URL: $PACKAGE_URL"
-        - name: Run Komac
-          uses: michidk/run-komac@v1
-          with:
-            args: 'update --token="$KOMAC_TOKEN" -i "$PACKAGE_ID" -v "$PACKAGE_VERSION" -u "$PACKAGE_URL" --submit'
+        # # - name: Run Komac
+        # #   uses: michidk/run-komac@v1
+        # #   with:
+        # #     args: 'update --token="$KOMAC_TOKEN" -i "$PACKAGE_ID" -v "$PACKAGE_VERSION" -u "$PACKAGE_URL" --submit'
         # - name: Install Komac
         #   run: |
         #     winget install komac --disable-interactivity --accept-source-agreements
@@ -103,3 +103,11 @@ jobs:
         # - name: Remove token from Komac
         #   run: |
         #     komac token remove --yes
+        - name: Install winget
+          uses: Cyberboss/install-winget@v1
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        - name: Install wingetcreate
+          run: winget install wingetcreate --disable-interactivity --accept-source-agreements
+        - name: Install Komac
+          run: winget install komac --disable-interactivity --accept-source-agreements
