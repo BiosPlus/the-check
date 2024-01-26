@@ -4,6 +4,11 @@ on:
 jobs:
   Package-Submission:
     runs-on: ubuntu-latest
+    env: 
+      KOMAC_TOKEN: ${{ secrets.PR_TOKEN }}
+      PACKAGE_ID: ${{ matrix.package_id }}
+      PACKAGE_VERSION: ${{ matrix.package_versions }}
+      PACKAGE_URL: "https://downloads.topazlabs.com/deploy/TopazPhotoAI/${{ matrix.package_versions }}/TopazPhotoAI-${{ matrix.package_versions }}.msi"
     strategy:
       matrix:
         package_versions:
@@ -74,10 +79,15 @@ jobs:
     steps:
         - name: Checkout code
           uses: actions/checkout@v4
+        - name: Variables
+          run: |
+            echo "Package ID: $PACKAGE_ID"
+            echo "Package Version: $PACKAGE_VERSION"
+            echo "Package URL: $PACKAGE_URL"
         - name: Run Komac
           uses: michidk/run-komac@v1
           with:
-            args: 'update --token={{ secrets.PR_TOKEN }} -i "{{ matrix.package_id }}" -v "{{ matrix.package_versions }}" -u "https://downloads.topazlabs.com/deploy/TopazPhotoAI/{{ matrix.package_versions }}/TopazPhotoAI-{{ matrix.package_versions }}.msi" --submit'
+            args: 'update --token="$KOMAC_TOKEN" -i "$PACKAGE_ID" -v "$PACKAGE_VERSION" -u "$PACKAGE_URL" --submit'
         # - name: Install Komac
         #   run: |
         #     winget install komac --disable-interactivity --accept-source-agreements
