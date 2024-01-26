@@ -1,6 +1,6 @@
 name: Submit Packages en Masse
 on:
-  workflow_dispatch:
+  push:
 jobs:
   Package-Submission:
     runs-on: ubuntu-latest
@@ -95,7 +95,7 @@ jobs:
             ./komac token update --token=$KOMAC_TOKEN
         - name: Generate Manifest and Submit
           run: |
-            ./komac update -i "$PACKAGE_ID" -v "$PACKAGE_VERSION" -u "$PACKAGE_URL" --submit
+            ./komac update -i "$PACKAGE_ID" -v $PACKAGE_VERSION -u "$PACKAGE_URL" --submit
         - name: Remove token from Komac
           run: |
             ./komac token remove --yes
