@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 jobs:
   Package-Submission:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env: 
       KOMAC_TOKEN: ${{ secrets.PR_TOKEN }}
       PACKAGE_ID: ${{ matrix.package_id }}
