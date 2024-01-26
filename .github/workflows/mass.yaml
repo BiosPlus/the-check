@@ -77,19 +77,19 @@ jobs:
         - name: Run Komac
           uses: michidk/run-komac@v1
           with:
-            args: '--version'
+            args: 'update --token={{ secrets.PR_TOKEN }} -i "{{ matrix.package_id }}" -v "{{ matrix.package_versions }}" -u "https://downloads.topazlabs.com/deploy/TopazPhotoAI/{{ matrix.package_versions }}/TopazPhotoAI-{{ matrix.package_versions }}.msi" --submit'
         # - name: Install Komac
         #   run: |
         #     winget install komac --disable-interactivity --accept-source-agreements
-        - name: LS everything
-          run: |
-            ls -lRa
-        - name: Add token to Komac
-          run: |
-            komac token update --token={{ secrets.PR_TOKEN }}
-        - name: Generate Manifest and Submit
-          run: |
-            komac update -i "{{ matrix.package_id }}" -v "{{ matrix.package_versions }}" -u "https://downloads.topazlabs.com/deploy/TopazPhotoAI/{{ matrix.package_versions }}/TopazPhotoAI-{{ matrix.package_versions }}.msi" --submit
-        - name: Remove token from Komac
-          run: |
-            komac token remove --yes
+        # - name: LS everything
+        #   run: |
+        #     ls -lRa
+        # - name: Add token to Komac
+        #   run: |
+        #     komac token update --token={{ secrets.PR_TOKEN }}
+        # - name: Generate Manifest and Submit
+        #   run: |
+        #     komac update --token={{ secrets.PR_TOKEN }} -i "{{ matrix.package_id }}" -v "{{ matrix.package_versions }}" -u "https://downloads.topazlabs.com/deploy/TopazPhotoAI/{{ matrix.package_versions }}/TopazPhotoAI-{{ matrix.package_versions }}.msi" --submit
+        # - name: Remove token from Komac
+        #   run: |
+        #     komac token remove --yes
