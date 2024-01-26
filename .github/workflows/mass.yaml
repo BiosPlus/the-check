@@ -89,7 +89,7 @@ jobs:
             wget "https://github.com/russellbanks/Komac/releases/download/nightly/KomacPortable-linux-nightly-x64.tar.gz"
             tar -xzf KomacPortable-linux-nightly-x64.tar.gz
             mv KomacPortable-linux-nightly-x64 komac
-            rm KomacPortable-linux-nightly-x64
+            rm KomacPortable-linux-nightly-x64.tar.gz
         - name: Update Token
           run: |
             komac token update --token=$KOMAC_TOKEN
