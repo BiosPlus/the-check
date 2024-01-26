@@ -90,15 +90,15 @@ jobs:
             tar -xzf KomacPortable-linux-nightly-x64.tar.gz
             mv KomacPortable-linux-nightly-x64 komac
             rm KomacPortable-linux-nightly-x64.tar.gz
-        - name: Update Token
-          run: |
-            ./komac token update --token=$KOMAC_TOKEN
+        # - name: Update Token
+        #   run: |
+        #     ./komac token update --token=$KOMAC_TOKEN
         - name: Generate Manifest and Submit
           run: |
-            ./komac update -i "$PACKAGE_ID" -v $PACKAGE_VERSION -u "$PACKAGE_URL" --submit
-        - name: Remove token from Komac
-          run: |
-            ./komac token remove --yes
+            ./komac update --token=$KOMAC_TOKEN -i "$PACKAGE_ID" -v $PACKAGE_VERSION -u "$PACKAGE_URL" --submit
+        # - name: Remove token from Komac
+        #   run: |
+        #     ./komac token remove --yes
         # # - name: Run Komac
         # #   uses: michidk/run-komac@v1
         # #   with:
