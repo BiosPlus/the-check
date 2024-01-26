@@ -107,8 +107,6 @@ jobs:
           uses: Cyberboss/install-winget@v1
           with:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        - name: Install wingetcreate
-          run: winget install wingetcreate --disable-interactivity --accept-source-agreements
         - name: Install Komac
           run: winget install komac --disable-interactivity --accept-source-agreements
         - name: Add token to Komac
