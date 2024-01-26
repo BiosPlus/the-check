@@ -3,13 +3,13 @@ on:
   workflow_dispatch:
 jobs:
   Package-Submission:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         package_versions:
-            - 1.0.7
+            # - 1.0.7
             # - 1.0.8
-            # - 1.0.9
+            - 1.0.9
             # - 1.1.0
             # - 1.1.1
             # - 1.1.3
@@ -74,20 +74,16 @@ jobs:
     steps:
         - name: Checkout code
           uses: actions/checkout@v4
-        - name: Install winget
+        - name: Run Komac
+          uses: michidk/run-komac@v1
+          with:
+            args: '--version'
+        # - name: Install Komac
+        #   run: |
+        #     winget install komac --disable-interactivity --accept-source-agreements
+        - name: LS everything
           run: |
-            $progressPreference = 'silentlyContinue'
-            Write-Information "Downloading WinGet and its dependencies..."
-            Import-Module Appx
-            Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-            Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-            Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile Microsoft.UI.Xaml.2.7.x64.appx
-            Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
-            Add-AppxPackage Microsoft.UI.Xaml.2.7.x64.appx
-            Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-        - name: Install Komac
-          run: |
-            winget install komac --disable-interactivity --accept-source-agreements
+            ls -lRa
         - name: Add token to Komac
           run: |
             komac token update --token={{ secrets.PR_TOKEN }}
