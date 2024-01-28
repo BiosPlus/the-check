@@ -8,12 +8,16 @@ jobs:
       KOMAC_TOKEN: ${{ secrets.PR_TOKEN }}
       PACKAGE_ID: ${{ matrix.package_id }}
       PACKAGE_VERSION: ${{ matrix.package_versions }}
-      PACKAGE_URL: "http://qmmp.ylsoftware.com/files/windows/2.0/qmmp-${{ matrix.package_versions }}-win32.exe"
+      PACKAGE_URL: "http://qmmp.ylsoftware.com/files/windows/1.6/qmmp-${{ matrix.package_versions }}-win32.exe"
     strategy:
       matrix:
         package_versions:
-            - 2.0.4
-            - 2.0.3
+            - 1.6.0
+            - 1.6.1
+            - 1.6.2
+            - 1.6.3
+            - 1.6.4
+            - 1.6.5
         package_id:
             - QmmpDevelopmentTeam.qmmp
     steps:
