@@ -10,6 +10,10 @@ test_url() {
     if [ "$response" == "200" ]; then
         # echo "File is available: $url"
         echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> tested_urls.csv
+    elif [ "$response" == "404" ]; then
+        echo -e "\e[31mFile may not be available: $url (HTTP response code: $response)\e[0m"
+        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> tested_urls.csv
+    fi
     else
         echo -e "\e[31mFile may not be available: $url (HTTP response code: $response)\e[0m"
         echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> tested_urls.csv
@@ -28,6 +32,11 @@ else
 fi
 
 # Rest of your script...
+file_count=$(find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | wc -l)
+url_count=$(find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | xargs grep -E "InstallerUrl" | wc -l)
+echo "Number of installer files to check: $file_count"
+echo "Number of URLs to check: $url_count"
+
 find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | while read -r file; do
     URLS=($(grep -E "InstallerUrl" "$file" | awk -F ': ' '{print $2}'))
     PACKAGEIDENTIFIER=$(grep -E "PackageIdentifier" "$file" | awk -F ': ' '{print $2}')
