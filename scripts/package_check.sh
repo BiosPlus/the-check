@@ -12,15 +12,18 @@ test_url() {
     local http_code=${results[0]}
     local content_type=${results[1]}
 
-    if [ "$http_code" == "200" ]; then
-        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
-    elif [ "$http_code" == "404" ]; then
-        echo -e "\e[31mFile may not be available: $url (HTTP response code: $http_code)\e[0m"
-        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
-    else
-        echo -e "\e[31mFile may not be available: $url (HTTP response code: $http_code)\e[0m"
-        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
-    fi
+    # if [ "$http_code" == "200" ]; then
+    #     echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
+    # elif [ "$http_code" == "404" ]; then
+    #     #echo -e "\e[31mFile may not be available: $url (HTTP response code: $http_code)\e[0m"
+    #     echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
+    # else
+    #     #echo -e "\e[31mFile may not be available: $url (HTTP response code: $http_code)\e[0m"
+    #     echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
+    # fi
+
+    echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
+
 }
 
 # Check if the repository already exists
@@ -38,6 +41,8 @@ fi
 # Beginning of the script
 file_count=$(find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | wc -l)
 url_count=$(find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | xargs grep -E "InstallerUrl" | wc -l)
+urls_checked=0
+
 echo "Number of installer files to check: $file_count"
 echo "Number of URLs to check: $url_count"
 
@@ -55,5 +60,10 @@ find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | whi
         # sleep $((RANDOM % 3 + 1)) # Add random wait between 1 to 3 seconds
         sleep 0.2
         test_url "$url"
+        ((urls_checked++)) # Increment urls_checked
     done
 done
+
+if ((urls_checked % 100 == 0)); then
+    echo "Number of URLs checked: $urls_checked/$url_count"
+fi
