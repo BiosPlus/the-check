@@ -23,7 +23,6 @@ test_url() {
     # fi
 
     echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
-
 }
 
 # Check if the repository already exists
