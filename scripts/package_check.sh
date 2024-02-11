@@ -6,20 +6,12 @@ LETTER="$1"
 # Function to test if a file is available
 test_url() {
     local url=$1
-    local response
-
-    if [[ $url == *"github.com"* ]]; then
-        local api_url="${url/github.com/api.github.com/repos}"
-        response=$(curl -s -L --head -w "%{http_code}" "$api_url" -o /dev/null)
-    else
-        response=$(curl -s -L --head -w "%{http_code}" "$url" -o /dev/null)
-    fi
-
+    local response=$(curl -s -L --head -w "%{http_code}" "$url" -o /dev/null)
     if [ "$response" == "200" ]; then
         # echo "File is available: $url"
         echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> successes.csv
     else
-        echo -e "\e[31mFile is not available: $url\e[0m"
+        echo -e "\e[31mFile may not be available: $url\e[0m"
         echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> fails.csv
     fi
 }
