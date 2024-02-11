@@ -6,17 +6,20 @@ LETTER="$1"
 # Function to test if a file is available
 test_url() {
     local url=$1
-    local response=$(curl -s -L --head -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0" -w "%{http_code}" "$url" -o /dev/null)
-    if [ "$response" == "200" ]; then
-        # echo "File is available: $url"
-        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> tested_urls.csv
-    elif [ "$response" == "404" ]; then
-        echo -e "\e[31mFile may not be available: $url (HTTP response code: $response)\e[0m"
-        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> tested_urls.csv
-    fi
+    local response=$(curl -s -L --head -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0" -w "%{http_code},%{content_type}###" "$url" -o /dev/null)
+
+    IFS=',' read -r -a results <<< "$response"
+    local http_code=${results[0]}
+    local content_type=${results[1]}
+
+    if [ "$http_code" == "200" ]; then
+        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
+    elif [ "$http_code" == "404" ]; then
+        echo -e "\e[31mFile may not be available: $url (HTTP response code: $http_code)\e[0m"
+        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
     else
-        echo -e "\e[31mFile may not be available: $url (HTTP response code: $response)\e[0m"
-        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> tested_urls.csv
+        echo -e "\e[31mFile may not be available: $url (HTTP response code: $http_code)\e[0m"
+        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$http_code,$content_type" >> tested_urls.csv
     fi
 }
 
@@ -31,7 +34,8 @@ else
     git clone https://github.com/microsoft/winget-pkgs
 fi
 
-# Rest of your script...
+
+# Beginning of the script
 file_count=$(find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | wc -l)
 url_count=$(find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | xargs grep -E "InstallerUrl" | wc -l)
 echo "Number of installer files to check: $file_count"
