@@ -57,7 +57,7 @@ find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | whi
     # Test each URL
     for url in "${URLS[@]}"; do
         # sleep $((RANDOM % 3 + 1)) # Add random wait between 1 to 3 seconds
-        sleep 0.2
+        # sleep 0.2
         test_url "$url"
         ((urls_checked++)) # Increment urls_checked
         if ((urls_checked % 50 == 0)); then
