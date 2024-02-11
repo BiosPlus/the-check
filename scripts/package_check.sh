@@ -6,7 +6,7 @@ LETTER="$1"
 # Function to test if a file is available
 test_url() {
     local url=$1
-    local response=$(curl -s -L --head -w "%{http_code}" "$url" -o /dev/null)
+    local response=$(curl -s -L --head -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0" -w "%{http_code}" "$url" -o /dev/null)
     if [ "$response" == "200" ]; then
         # echo "File is available: $url"
         echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> tested_urls.csv
@@ -39,7 +39,7 @@ find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | whi
 
     # Test each URL
     for url in "${URLS[@]}"; do
-        sleep $((RANDOM % 5 + 1)) # Add random wait between 1 to 5 seconds
+        sleep $((RANDOM % 3 + 1)) # Add random wait between 1 to 3 seconds
         test_url "$url"
     done
 done
