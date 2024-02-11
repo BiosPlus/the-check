@@ -59,7 +59,7 @@ find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | whi
         # sleep $((RANDOM % 3 + 1)) # Add random wait between 1 to 3 seconds
         sleep 0.2
         test_url "$url"
-        urls_checked++ # Increment urls_checked
+        ((urls_checked++)) # Increment urls_checked
         if ((urls_checked % 50 == 0)); then
             echo "Number of URLs checked: $urls_checked/$url_count"
         fi
