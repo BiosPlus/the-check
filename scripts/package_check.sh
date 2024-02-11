@@ -9,10 +9,10 @@ test_url() {
     local response=$(curl -s -L --head -w "%{http_code}" "$url" -o /dev/null)
     if [ "$response" == "200" ]; then
         # echo "File is available: $url"
-        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> successes.csv
+        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> tested_urls.csv
     else
-        echo -e "\e[31mFile may not be available: $url\e[0m"
-        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> fails.csv
+        echo -e "\e[31mFile may not be available: $url (HTTP response code: $response)\e[0m"
+        echo "$PACKAGEIDENTIFIER,$PACKAGEVERSION,$url,$response" >> tested_urls.csv
     fi
 }
 

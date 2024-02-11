@@ -56,14 +56,14 @@ jobs:
       - name: Run checker script
         run: |
           ./scripts/package_check.sh ${{ matrix.alphabet }}
-      - name: List failed urls
-        run: |
-           cat fails.csv
-      - name: Upload failed urls artifact
+      # - name: List failed urls
+      #   run: |
+      #      cat fails.csv
+      - name: Upload urls artifact
         uses: actions/upload-artifact@v4
         with:
-          name: failed_urls_${{ matrix.alphabet }}
-          path: fails_sorted.csv
+          name: tested_urls_${{ matrix.alphabet }}
+          path: tested_urls.csv
           if-no-files-found: ignore
           retention-days: 1
   Compose-Artifacts:
@@ -77,11 +77,10 @@ jobs:
         - name: Compose all artifacts
           run: |
               ls -lhR ~
-              cat failed_urls_*/* > all_failed_urls.csv
-              cat all_failed_urls.csv
+              cat tested_urls_*/* > all_tested_urls.csv
         - name: Upload final artifact
           uses: actions/upload-artifact@v4
           with:
-              name: all_failed_urls
-              path: all_failed_urls.csv
+              name: all_tested_urls
+              path: all_tested_urls.csv
               retention-days: 1
