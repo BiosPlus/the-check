@@ -47,7 +47,7 @@ echo "Number of URLs to check: $url_count"
 
 find winget-pkgs/manifests/$LETTER/ -type f -name "*installer.yaml" | sort | while read -r file; do
     URLS=($(grep -E "InstallerUrl" "$file" | awk -F ': ' '{print $2}' | sed 's/ /%20/g'))
-    PACKAGEIDENTIFIER=$(grep -E "PackageIdentifier" "$file" | awk -F ': ' '{print $2}')
+    PACKAGEIDENTIFIER=$(grep -E "PackageIdentifier" "$file" | awk -F ': ' '{print $2}' | tr -d "'" | tr -d '"')
     PACKAGEVERSION=$(grep -E "PackageVersion" "$file" | awk -F ': ' '{print $2}')
     # echo "File: $file"
     # echo "Package Identifier: $PACKAGEIDENTIFIER"
